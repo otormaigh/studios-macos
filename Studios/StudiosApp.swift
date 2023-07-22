@@ -2,7 +2,7 @@
 //  StudiosApp.swift
 //  Studios
 //
-//  Created by Fred on 22/07/2023.
+//  Created by Elliot on 22/07/2023.
 //
 
 import SwiftUI
@@ -11,7 +11,7 @@ import SwiftUI
 struct StudiosApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+          HomeView(viewModel: HomeViewModel())
         }
     }
 }
