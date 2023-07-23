@@ -50,17 +50,10 @@ struct HomeView: View {
           Button("All") {
             releaseChannelFilter = nil
           }
-          Button("Stable") {
-            releaseChannelFilter = ReleaseChannel.Stable
-          }
-          Button("RC") {
-            releaseChannelFilter = ReleaseChannel.RC
-          }
-          Button("Beta") {
-            releaseChannelFilter = ReleaseChannel.Beta
-          }
-          Button("Canary") {
-            releaseChannelFilter = ReleaseChannel.Canary
+          ForEach(ReleaseChannel.allCases, id: \.self) { channel in
+            Button(channel.name) {
+              releaseChannelFilter = channel
+            }
           }
         } label: {
           Label(releaseChannelFilter == nil ? "" : "\(releaseChannelFilter!.name) Only", systemImage: "line.3.horizontal.decrease.circle")

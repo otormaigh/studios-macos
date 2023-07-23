@@ -14,7 +14,7 @@ struct ReleaseDetailView: View {
     var body: some View {
       HStack() {
         VStack(alignment: .leading, spacing: nil) {
-          Image(archiveRelease.channel.iconName)
+          Image(archiveRelease.channel?.iconName ?? ReleaseChannel.Stable.iconName)
             .resizable()
             .scaledToFit()
             .frame(width: 75, height: 75)

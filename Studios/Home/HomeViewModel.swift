@@ -41,17 +41,17 @@ class HomeViewModel: ObservableObject {
               let releaseDate = titleSplit.suffix(3).joined(separator: " ")
               let releaseName = titleSplit.prefix(1).joined(separator: " ")
               let versionName = [titleSplit[2], titleSplit[3], titleSplit[4]].joined(separator: " ")
-              let releaseChannel: ReleaseChannel
-              if versionName.contains(" Canary ") {
+              let releaseChannel: ReleaseChannel?
+              if title.contains(" Canary ") {
                 releaseChannel = ReleaseChannel.Canary
-              } else if versionName.contains(" Beta ") {
+              } else if title.contains(" Beta ") {
                 releaseChannel = ReleaseChannel.Beta
-              } else if versionName.contains(" RC ") {
+              } else if title.contains(" RC ") {
                 releaseChannel = ReleaseChannel.RC
-              } else if versionName.contains(" Patch ") {
+              } else if title.contains(" Patch ") {
                 releaseChannel = ReleaseChannel.Stable
               } else {
-                releaseChannel = ReleaseChannel.Unknown
+                releaseChannel = nil
               }
               
               let downloadLinks = try! element.select("a")

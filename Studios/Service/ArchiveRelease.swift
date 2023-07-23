@@ -14,7 +14,7 @@ struct ArchiveRelease: Identifiable, Hashable {
   let date: String
   let name: String
   let version: String
-  let channel: ReleaseChannel
+  let channel: ReleaseChannel?
   let downloadLinks: [DownloadLink]
 }
 
@@ -35,12 +35,11 @@ enum Platform {
   case MacSilicon, MacIntel, Linux, Windows, Unknown
 }
 
-enum ReleaseChannel: String {
-  case Stable, Unknown, RC, Beta, Canary
-  
+enum ReleaseChannel: String, CaseIterable {
+  case Stable, RC, Beta, Canary
   var iconName: String {
     switch self {
-      case .Stable, .Unknown:
+      case .Stable:
         return "AS Icon Stable"
       case .RC, .Beta, .Canary:
         return "AS Icon Preview"
@@ -51,8 +50,6 @@ enum ReleaseChannel: String {
     switch self {
       case .Stable:
         return "Stable"
-      case .Unknown:
-        return "Unknown"
       case .RC:
         return "RC"
       case .Beta:
