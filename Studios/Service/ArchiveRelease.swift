@@ -24,10 +24,15 @@ struct DownloadLink: Identifiable, Hashable {
   let fileName: String
   let url: String
   let type: DownloadType
+  let platform: Platform
 }
 
 enum DownloadType {
   case Installer, Zip
+}
+
+enum Platform {
+  case MacSilicon, MacIntel, Linux, Windows, Unknown
 }
 
 enum ReleaseChannel: String {

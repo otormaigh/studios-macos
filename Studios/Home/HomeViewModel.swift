@@ -34,7 +34,7 @@ class HomeViewModel: ObservableObject {
           do {
             let html = String(data: data, encoding: .utf8)!
             let doc: Document = try SwiftSoup.parse(html)
-            let elements = try doc.getElementsByClass("all-downloads").get(0).getElementsByClass("expandable").prefix(25)
+            let elements = try doc.getElementsByClass("all-downloads").get(0).getElementsByClass("expandable").prefix(100)
             let archiveReleases: [ArchiveRelease] = elements.enumerated().map { (index, element) in
               let title = try! element.select("p").text().replacingOccurrences(of: "Android Studio ", with: "")
               let titleSplit = title.split(separator: " ")
@@ -54,25 +54,36 @@ class HomeViewModel: ObservableObject {
                 releaseChannel = ReleaseChannel.Unknown
               }
               
-              let downloadLinks = try! element.select("a").filter({ element in
-                let href = try! element.attr("href")
-                return href.contains("mac")
-              })
+              let downloadLinks = try! element.select("a")
                 .enumerated()
                 .map({ (index, element) in
                   let href = try! element.attr("href")
                   let fileName = String(href.split(separator: "/").last!).condenseWhitespace()
                   let downloadType: DownloadType
-                  if title.contains(".dmg") {
+                  if fileName.contains(".dmg") {
                     downloadType = DownloadType.Installer
                   } else  {
                     downloadType = DownloadType.Zip
+                  }
+                  let platform: Platform
+                  if fileName.contains("mac_arm.") {
+                    platform = Platform.MacSilicon
+                  } else if fileName.contains("mac.") {
+                    platform = Platform.MacIntel
+                  } else if fileName.contains("linux.") {
+                    platform = Platform.Linux
+                  } else if fileName.contains("windows.") {
+                    platform = Platform.Windows
+                  } else {
+                    platform = Platform.Unknown
                   }
                   return DownloadLink(
                     id: Int(index),
                     fileName: fileName,
                     url: href,
-                    type: downloadType)
+                    type: downloadType,
+                    platform: platform
+                  )
                 })
               
               return ArchiveRelease(

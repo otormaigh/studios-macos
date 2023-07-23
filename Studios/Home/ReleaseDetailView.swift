@@ -27,9 +27,29 @@ struct ReleaseDetailView: View {
           Text(archiveRelease.date)
             .padding(.bottom)
           
-          Text("Downloads")
+          Text("Suggested Download")
             .font(.headline)
-          ForEach(archiveRelease.downloadLinks) { downloadLink in
+            .padding(.top)
+          ForEach(archiveRelease.downloadLinks.filter({ downloadLink in
+            downloadLink.platform == Platform.MacSilicon && downloadLink.type == DownloadType.Zip
+          })) { downloadLink in
+            HStack(alignment: .center, spacing: nil) {
+              Text(downloadLink.fileName)
+                .frame(maxWidth: .infinity, alignment: .leading)
+              Button(action: {
+              }) {
+                Text("Download")
+              }
+              .padding(.leading)
+            }
+          }
+          
+          Text("Other Downloads")
+            .font(.headline)
+            .padding(.top)
+          ForEach(archiveRelease.downloadLinks.filter({ downloadLink in
+            downloadLink.platform != Platform.MacSilicon
+          })) { downloadLink in
             HStack(alignment: .center, spacing: nil) {
               Text(downloadLink.fileName)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -67,12 +87,17 @@ struct ReleaseDetailView_Previews: PreviewProvider {
             id: 1,
             fileName: "android-studio-2023.1.1.13-mac_arm.zip",
             url: "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2023.1.1.13/android-studio-2023.1.1.13-mac_arm.zip",
-            type: DownloadType.Zip),
+            type: DownloadType.Zip,
+            platform: Platform.MacSilicon
+          ),
           DownloadLink(
             id: 1,
             fileName: "android-studio-2023.1.1.13-mac.zip",
             url: "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2023.1.1.13/android-studio-2023.1.1.13-mac.zip",
-            type: DownloadType.Zip)]
+            type: DownloadType.Zip,
+            platform: Platform.MacIntel
+          )
+        ]
       ))
     }
 }

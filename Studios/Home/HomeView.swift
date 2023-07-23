@@ -15,9 +15,8 @@ struct HomeView: View {
   )
   
   @ObservedObject var viewModel: HomeViewModel
-  @State private var showWebView = false
-  @State private var listItemIds: ArchiveRelease.ID?
   @State private var columnVisibility = NavigationSplitViewVisibility.doubleColumn
+  @State private var selectedItemId: ArchiveRelease.ID?
   @State private var releaseChannelFilter: ReleaseChannel? = nil
   
   var body: some View {
@@ -31,11 +30,11 @@ struct HomeView: View {
           } else {
             return item.channel == releaseChannelFilter
           }
-        }), selection: $listItemIds) { item in
+        }), selection: $selectedItemId) { item in
           Text("\(item.name) \(item.version)")
         }
       } detail: {
-        if let archiveRelease = viewModel.listItems.first(where: { archiveRelease in archiveRelease.id == listItemIds }) {
+        if let archiveRelease = viewModel.listItems.first(where: { archiveRelease in archiveRelease.id == selectedItemId }) {
           ReleaseDetailView(archiveRelease: archiveRelease)
             .navigationSplitViewColumnWidth(400)
         } else {
