@@ -34,24 +34,24 @@ class HomeViewModel: ObservableObject {
           do {
             let html = String(data: data, encoding: .utf8)!
             let doc: Document = try SwiftSoup.parse(html)
-            let elements = try doc.getElementsByClass("all-downloads").get(0).getElementsByClass("expandable").prefix(10)
+            let elements = try doc.getElementsByClass("all-downloads").get(0).getElementsByClass("expandable").prefix(25)
             let archiveReleases: [ArchiveRelease] = elements.enumerated().map { (index, element) in
               let title = try! element.select("p").text().replacingOccurrences(of: "Android Studio ", with: "")
               let titleSplit = title.split(separator: " ")
               let releaseDate = titleSplit.suffix(3).joined(separator: " ")
               let releaseName = titleSplit.prefix(1).joined(separator: " ")
               let versionName = [titleSplit[2], titleSplit[3], titleSplit[4]].joined(separator: " ")
-              let releaseType: ReleaseType
+              let releaseChannel: ReleaseChannel
               if versionName.contains(" Canary ") {
-                releaseType = ReleaseType.Canary
+                releaseChannel = ReleaseChannel.Canary
               } else if versionName.contains(" Beta ") {
-                releaseType = ReleaseType.Beta
+                releaseChannel = ReleaseChannel.Beta
               } else if versionName.contains(" RC ") {
-                releaseType = ReleaseType.RC
+                releaseChannel = ReleaseChannel.RC
               } else if versionName.contains(" Patch ") {
-                releaseType = ReleaseType.Stable
+                releaseChannel = ReleaseChannel.Stable
               } else {
-                releaseType = ReleaseType.Unknown
+                releaseChannel = ReleaseChannel.Unknown
               }
               
               let downloadLinks = try! element.select("a").filter({ element in
@@ -81,10 +81,10 @@ class HomeViewModel: ObservableObject {
                 date: releaseDate,
                 name: releaseName,
                 version: versionName,
-                type: releaseType,
+                channel: releaseChannel,
                 downloadLinks: downloadLinks)
             }
-            self.listItems.append(contentsOf: archiveReleases.sorted { $0.title > $1.title })
+            self.listItems.append(contentsOf: archiveReleases.sorted { $0.name > $1.name })
           } catch {
             
           }

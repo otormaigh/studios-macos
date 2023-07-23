@@ -18,13 +18,20 @@ struct HomeView: View {
   @State private var showWebView = false
   @State private var listItemIds: ArchiveRelease.ID?
   @State private var columnVisibility = NavigationSplitViewVisibility.doubleColumn
+  @State private var releaseChannelFilter: ReleaseChannel? = nil
   
   var body: some View {
     VStack {
       NavigationSplitView(columnVisibility: $columnVisibility) {
         Text("").navigationSplitViewColumnWidth(0)
       } content: {
-        List(viewModel.listItems, selection: $listItemIds) { item in
+        List(viewModel.listItems.filter({ item in
+          if releaseChannelFilter == nil {
+            return true
+          } else {
+            return item.channel == releaseChannelFilter
+          }
+        }), selection: $listItemIds) { item in
           Text("\(item.name) \(item.version)")
         }
       } detail: {
@@ -40,7 +47,29 @@ struct HomeView: View {
     
     .onAppear { self.viewModel.fetch() }
     .toolbar {
-      Text("")
+        Menu {
+          Button("All") {
+            releaseChannelFilter = nil
+          }
+          Button("Stable") {
+            releaseChannelFilter = ReleaseChannel.Stable
+          }
+          Button("RC") {
+            releaseChannelFilter = ReleaseChannel.RC
+          }
+          Button("Beta") {
+            releaseChannelFilter = ReleaseChannel.Beta
+          }
+          Button("Canary") {
+            releaseChannelFilter = ReleaseChannel.Canary
+          }
+        } label: {
+          Label(releaseChannelFilter == nil ? "" : "\(releaseChannelFilter!.name) Only", systemImage: "line.3.horizontal.decrease.circle")
+            .foregroundColor(.blue)
+            .labelStyle(.titleAndIcon)
+            .border(.red)
+        }
+        .menuIndicator(.hidden)
     }
   }
 }
