@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ReleaseDetailView: View {
   var archiveRelease: ArchiveRelease
-  
+  @Environment(\.openURL) private var openURL
+
     var body: some View {
       HStack() {
         VStack(alignment: .leading, spacing: nil) {
@@ -37,6 +38,7 @@ struct ReleaseDetailView: View {
               Text(downloadLink.fileName)
                 .frame(maxWidth: .infinity, alignment: .leading)
               Button(action: {
+                openURL(URL(string: downloadLink.url)!)
               }) {
                 Text("Download")
               }
