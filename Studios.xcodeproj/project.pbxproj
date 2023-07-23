@@ -14,7 +14,7 @@
 		B6D8A4612A6C4A5F000196FB /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D8A4602A6C4A5F000196FB /* HomeViewModel.swift */; };
 		B6D8A4642A6C4AA3000196FB /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = B6D8A4632A6C4AA3000196FB /* SwiftSoup */; };
 		B6D8A4672A6C4BC3000196FB /* ArchiveRelease.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D8A4662A6C4BC3000196FB /* ArchiveRelease.swift */; };
-		B6D8A46C2A6C64DA000196FB /* VersionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D8A46B2A6C64DA000196FB /* VersionDetailView.swift */; };
+		B6D8A46C2A6C64DA000196FB /* ReleaseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D8A46B2A6C64DA000196FB /* ReleaseDetailView.swift */; };
 		B6D8A46F2A6C6F36000196FB /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D8A46E2A6C6F36000196FB /* String+Ext.swift */; };
 /* End PBXBuildFile section */
 
@@ -27,7 +27,7 @@
 		B6D8A45D2A6C4A41000196FB /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B6D8A4602A6C4A5F000196FB /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		B6D8A4662A6C4BC3000196FB /* ArchiveRelease.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveRelease.swift; sourceTree = "<group>"; };
-		B6D8A46B2A6C64DA000196FB /* VersionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionDetailView.swift; sourceTree = "<group>"; };
+		B6D8A46B2A6C64DA000196FB /* ReleaseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseDetailView.swift; sourceTree = "<group>"; };
 		B6D8A46E2A6C6F36000196FB /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -86,7 +86,7 @@
 			children = (
 				B6D8A45D2A6C4A41000196FB /* HomeView.swift */,
 				B6D8A4602A6C4A5F000196FB /* HomeViewModel.swift */,
-				B6D8A46B2A6C64DA000196FB /* VersionDetailView.swift */,
+				B6D8A46B2A6C64DA000196FB /* ReleaseDetailView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -184,7 +184,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6D8A46F2A6C6F36000196FB /* String+Ext.swift in Sources */,
-				B6D8A46C2A6C64DA000196FB /* VersionDetailView.swift in Sources */,
+				B6D8A46C2A6C64DA000196FB /* ReleaseDetailView.swift in Sources */,
 				B6D8A44F2A6C4980000196FB /* StudiosApp.swift in Sources */,
 				B6D8A4612A6C4A5F000196FB /* HomeViewModel.swift in Sources */,
 				B6D8A4672A6C4BC3000196FB /* ArchiveRelease.swift in Sources */,

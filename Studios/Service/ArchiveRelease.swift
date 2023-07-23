@@ -14,6 +14,7 @@ struct ArchiveRelease: Identifiable, Hashable {
   let date: String
   let name: String
   let version: String
+  let type: ReleaseType
   let downloadLinks: [DownloadLink]
 }
 
@@ -27,4 +28,17 @@ struct DownloadLink: Identifiable, Hashable {
 
 enum DownloadType {
   case Installer, Zip
+}
+
+enum ReleaseType: String {
+  case Stable, Unknown, RC, Beta, Canary
+  
+  var iconName: String {
+    switch self {
+      case .Stable, .Unknown:
+        return "AS Icon Stable"
+      case .RC, .Beta, .Canary:
+        return "AS Icon Preview"
+    }
+  }
 }

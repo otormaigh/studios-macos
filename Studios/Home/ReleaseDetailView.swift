@@ -13,6 +13,11 @@ struct ReleaseDetailView: View {
     var body: some View {
       HStack() {
         VStack(alignment: .leading, spacing: nil) {
+          Image(archiveRelease.type.iconName)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 75, height: 75)
+          
           Text("\(archiveRelease.name) \(archiveRelease.version)")
             .font(.largeTitle)
             .padding(.bottom)
@@ -56,6 +61,7 @@ struct ReleaseDetailView_Previews: PreviewProvider {
         date: "July 18, 2023",
         name: "Hedgehog",
         version: "2023.1.1 Canary 13",
+        type: ReleaseType.Canary,
         downloadLinks: [
           DownloadLink(
             id: 1,

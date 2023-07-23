@@ -16,6 +16,7 @@ class HomeViewModel: ObservableObject {
     category: String(describing: HomeViewModel.self)
   )
   var cancellables: Set<AnyCancellable> = Set()
+  // FIXME: Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
   @Published var listItems = [ArchiveRelease]()
   
   func fetch() {
@@ -24,7 +25,6 @@ class HomeViewModel: ObservableObject {
       guard let data = data else { return }
   
       do {
-        //
         let html = String(data: data, encoding: .utf8)!
         let doc: Document = try SwiftSoup.parse(html)
         let iframeUrl = try doc.getElementsByTag("devsite-iframe").get(0).getElementsByTag("iframe").attr("src")
@@ -37,6 +37,22 @@ class HomeViewModel: ObservableObject {
             let elements = try doc.getElementsByClass("all-downloads").get(0).getElementsByClass("expandable").prefix(10)
             let archiveReleases: [ArchiveRelease] = elements.enumerated().map { (index, element) in
               let title = try! element.select("p").text().replacingOccurrences(of: "Android Studio ", with: "")
+              let titleSplit = title.split(separator: " ")
+              let releaseDate = titleSplit.suffix(3).joined(separator: " ")
+              let releaseName = titleSplit.prefix(1).joined(separator: " ")
+              let versionName = [titleSplit[2], titleSplit[3], titleSplit[4]].joined(separator: " ")
+              let releaseType: ReleaseType
+              if versionName.contains(" Canary ") {
+                releaseType = ReleaseType.Canary
+              } else if versionName.contains(" Beta ") {
+                releaseType = ReleaseType.Beta
+              } else if versionName.contains(" RC ") {
+                releaseType = ReleaseType.RC
+              } else if versionName.contains(" Patch ") {
+                releaseType = ReleaseType.Stable
+              } else {
+                releaseType = ReleaseType.Unknown
+              }
               
               let downloadLinks = try! element.select("a").filter({ element in
                 let href = try! element.attr("href")
@@ -45,6 +61,7 @@ class HomeViewModel: ObservableObject {
                 .enumerated()
                 .map({ (index, element) in
                   let href = try! element.attr("href")
+                  let fileName = String(href.split(separator: "/").last!).condenseWhitespace()
                   let downloadType: DownloadType
                   if title.contains(".dmg") {
                     downloadType = DownloadType.Installer
@@ -53,18 +70,18 @@ class HomeViewModel: ObservableObject {
                   }
                   return DownloadLink(
                     id: Int(index),
-                    fileName: String(href.split(separator: "/").last!).condenseWhitespace(),
+                    fileName: fileName,
                     url: href,
                     type: downloadType)
                 })
-              let titleSplit = title.split(separator: " ")
               
               return ArchiveRelease(
                 id: Int(index),
                 title: title,
-                date: titleSplit.suffix(3).joined(separator: " "),
-                name: titleSplit.prefix(1).joined(separator: " "),
-                version: [titleSplit[2], titleSplit[3], titleSplit[4]].joined(separator: " "),
+                date: releaseDate,
+                name: releaseName,
+                version: versionName,
+                type: releaseType,
                 downloadLinks: downloadLinks)
             }
             self.listItems.append(contentsOf: archiveReleases.sorted { $0.title > $1.title })
