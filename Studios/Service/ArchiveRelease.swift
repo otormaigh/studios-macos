@@ -40,9 +40,9 @@ enum ReleaseChannel: String, CaseIterable {
   case Stable, RC, Beta, Canary
   var iconName: String {
     switch self {
-      case .Stable:
+      case .Stable, .RC:
         return "AS Icon Stable"
-      case .RC, .Beta, .Canary:
+      case .Beta, .Canary:
         return "AS Icon Preview"
     }
   }
