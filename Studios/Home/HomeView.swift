@@ -31,7 +31,13 @@ struct HomeView: View {
             return item.channel == releaseChannelFilter
           }
         }), selection: $selectedItemId) { item in
-          Text("\(item.name) \(item.version)")
+          HStack {
+            Text("\(item.name) \(item.version)")
+            Spacer()
+            if item.isInstalled {
+              Image(systemName: "checkmark.circle.fill")
+            }
+          }
         }
       } detail: {
         if let archiveRelease = viewModel.listItems.first(where: { archiveRelease in archiveRelease.id == selectedItemId }) {

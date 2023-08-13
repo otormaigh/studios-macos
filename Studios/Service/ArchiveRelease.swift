@@ -16,6 +16,7 @@ struct ArchiveRelease: Identifiable, Hashable {
   let version: String
   let channel: ReleaseChannel?
   let downloadLinks: [DownloadLink]
+  let isInstalled: Bool
 }
 
 struct DownloadLink: Identifiable, Hashable {

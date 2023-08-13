@@ -99,7 +99,8 @@ struct ReleaseDetailView_Previews: PreviewProvider {
             type: DownloadType.Zip,
             platform: Platform.MacIntel
           )
-        ]
+        ],
+        isInstalled: true
       ))
     }
 }

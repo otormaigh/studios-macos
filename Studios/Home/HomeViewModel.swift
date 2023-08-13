@@ -20,6 +20,8 @@ class HomeViewModel: ObservableObject {
   @Published var listItems = [ArchiveRelease]()
   
   func fetch() {
+    let installedVersions = fetchInstalledVersions()
+    
     let url = URL(string: "https://developer.android.com/studio/archive")!
     let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
       guard let data = data else { return }
@@ -36,11 +38,18 @@ class HomeViewModel: ObservableObject {
             let doc: Document = try SwiftSoup.parse(html)
             let elements = try doc.getElementsByClass("all-downloads").get(0).getElementsByClass("expandable").prefix(100)
             let archiveReleases: [ArchiveRelease] = elements.enumerated().map { (index, element) in
+              // Android Studio Hedgehog | 2023.1.1 Canary 15 July 31, 2023
               let title = try! element.select("p").text().replacingOccurrences(of: "Android Studio ", with: "")
               let titleSplit = title.split(separator: " ")
               let releaseDate = titleSplit.suffix(3).joined(separator: " ")
               let releaseName = titleSplit.prefix(1).joined(separator: " ")
-              let versionName = [titleSplit[2], titleSplit[3], titleSplit[4]].joined(separator: " ")
+              let versionName: String
+              if titleSplit[3].contains("Canary") || titleSplit[3].contains("Beta") || titleSplit[3].contains("RC") || titleSplit[3].contains("Patch") {
+                versionName = [titleSplit[2], titleSplit[3], titleSplit[4]].joined(separator: " ")
+              } else {
+                versionName = String(titleSplit[2])
+              }
+              let isInstalled = installedVersions.contains(versionName)
               let releaseChannel: ReleaseChannel?
               if title.contains(" Canary ") {
                 releaseChannel = ReleaseChannel.Canary
@@ -51,7 +60,7 @@ class HomeViewModel: ObservableObject {
               } else if title.contains(" Patch ") {
                 releaseChannel = ReleaseChannel.Stable
               } else {
-                releaseChannel = nil
+                releaseChannel = ReleaseChannel.Stable
               }
               
               let downloadLinks = try! element.select("a")
@@ -93,7 +102,8 @@ class HomeViewModel: ObservableObject {
                 name: releaseName,
                 version: versionName,
                 channel: releaseChannel,
-                downloadLinks: downloadLinks)
+                downloadLinks: downloadLinks,
+                isInstalled: isInstalled)
             }
             self.listItems.append(contentsOf: archiveReleases.sorted { $0.name > $1.name })
           } catch {
@@ -107,5 +117,28 @@ class HomeViewModel: ObservableObject {
     }
     
     task.resume()
+  }
+  
+  func fetchInstalledVersions() -> [String] {
+    HomeViewModel.logger.info("fetchInstalledVersions")
+    
+    var installedVersions: [String] = []
+    let fileManager = FileManager.default
+    let documentsURL = fileManager.urls(for: .applicationDirectory, in: .localDomainMask).first!
+    do {
+      let fileURLs = try fileManager.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: nil).filter({ url in
+        url.absoluteString.contains("Android%20Studio")
+      })
+      HomeViewModel.logger.info("fileURLs -> \(fileURLs)")
+      fileURLs.forEach { file in
+        let version = file.lastPathComponent.replacingOccurrences(of: "Android Studio ", with: "").replacingOccurrences(of: ".app", with: "")
+        HomeViewModel.logger.info("version -> \(version)")
+        installedVersions.append(version)
+      }
+    } catch {
+      HomeViewModel.logger.info("Error while enumerating files \(documentsURL.path): \(error.localizedDescription)")
+    }
+    
+    return installedVersions
   }
 }
