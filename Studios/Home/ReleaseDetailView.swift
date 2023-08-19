@@ -28,6 +28,28 @@ struct ReleaseDetailView: View {
           Text(archiveRelease.date)
             .padding(.bottom)
           
+          if archiveRelease.filePath != nil {
+              Text("File Path")
+                .font(.headline)
+              Button {
+                NSWorkspace.shared.activateFileViewerSelecting([archiveRelease.filePath!])
+              } label: {
+                let filePathString = archiveRelease.filePath!.absoluteString
+                  .replacingOccurrences(of: "file://", with: "")
+                  .replacingOccurrences(of: "%20", with: " ")
+                  .replacingOccurrences(of: ".app/", with: ".app")
+                Text("\(filePathString)  \(Image(systemName: "arrow.forward.circle.fill"))")
+              }
+              .buttonStyle(PlainButtonStyle())
+//            Button {
+//              let config = NSWorkspace.OpenConfiguration.init()
+//              config.allowsRunningApplicationSubstitution = false
+//              NSWorkspace.shared.openApplication(at: archiveRelease.filePath!, configuration: config)
+//            } label: {
+//              Text("Launch")
+//            }
+          }
+          
           Text("Suggested Download")
             .font(.headline)
             .padding(.top)
@@ -100,7 +122,8 @@ struct ReleaseDetailView_Previews: PreviewProvider {
             platform: Platform.MacIntel
           )
         ],
-        isInstalled: true
+        isInstalled: true,
+        filePath: nil
       ))
     }
 }

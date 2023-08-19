@@ -52,6 +52,11 @@ struct HomeView: View {
     
     .onAppear { self.viewModel.fetch() }
     .toolbar {
+      Button {
+        self.viewModel.fetch()
+      } label: {
+        Image(systemName: "arrow.clockwise")
+      }
         Menu {
           Button("All") {
             releaseChannelFilter = nil

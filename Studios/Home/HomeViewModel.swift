@@ -49,7 +49,8 @@ class HomeViewModel: ObservableObject {
               } else {
                 versionName = String(titleSplit[2])
               }
-              let isInstalled = installedVersions.contains(versionName)
+              let filePath = installedVersions[versionName]
+              let isInstalled = filePath != nil
               let releaseChannel: ReleaseChannel?
               if title.contains(" Canary ") {
                 releaseChannel = ReleaseChannel.Canary
@@ -103,7 +104,8 @@ class HomeViewModel: ObservableObject {
                 version: versionName,
                 channel: releaseChannel,
                 downloadLinks: downloadLinks,
-                isInstalled: isInstalled)
+                isInstalled: isInstalled,
+                filePath: filePath)
             }
             self.listItems.append(contentsOf: archiveReleases.sorted { $0.name > $1.name })
           } catch {
@@ -119,10 +121,10 @@ class HomeViewModel: ObservableObject {
     task.resume()
   }
   
-  func fetchInstalledVersions() -> [String] {
+  func fetchInstalledVersions() -> [String: URL] {
     HomeViewModel.logger.info("fetchInstalledVersions")
     
-    var installedVersions: [String] = []
+    var installedVersions: [String: URL] = [String:URL]()
     let fileManager = FileManager.default
     let documentsURL = fileManager.urls(for: .applicationDirectory, in: .localDomainMask).first!
     do {
@@ -130,15 +132,14 @@ class HomeViewModel: ObservableObject {
         url.absoluteString.contains("Android%20Studio")
       })
       HomeViewModel.logger.info("fileURLs -> \(fileURLs)")
-      fileURLs.forEach { file in
-        let version = file.lastPathComponent.replacingOccurrences(of: "Android Studio ", with: "").replacingOccurrences(of: ".app", with: "")
+      fileURLs.map { fileUrl in
+        let version = fileUrl.lastPathComponent.replacingOccurrences(of: "Android Studio ", with: "").replacingOccurrences(of: ".app", with: "")
         HomeViewModel.logger.info("version -> \(version)")
-        installedVersions.append(version)
+        installedVersions[version] = fileUrl
       }
     } catch {
       HomeViewModel.logger.info("Error while enumerating files \(documentsURL.path): \(error.localizedDescription)")
     }
-    
     return installedVersions
   }
 }
