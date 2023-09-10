@@ -20,6 +20,7 @@ class HomeViewModel: ObservableObject {
   @Published var listItems = [ArchiveRelease]()
   
   func fetch() {
+    listItems.removeAll()
     let installedVersions = fetchInstalledVersions()
     
     let url = URL(string: "https://developer.android.com/studio/archive")!
