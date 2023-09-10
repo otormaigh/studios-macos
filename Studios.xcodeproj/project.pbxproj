@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B641CFA52AAE24FE00ADCA42 /* DownloadLinksSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B641CFA42AAE24FE00ADCA42 /* DownloadLinksSection.swift */; };
 		B6D8A44F2A6C4980000196FB /* StudiosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D8A44E2A6C4980000196FB /* StudiosApp.swift */; };
 		B6D8A4532A6C4981000196FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6D8A4522A6C4981000196FB /* Assets.xcassets */; };
 		B6D8A4562A6C4981000196FB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6D8A4552A6C4981000196FB /* Preview Assets.xcassets */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B641CFA42AAE24FE00ADCA42 /* DownloadLinksSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadLinksSection.swift; sourceTree = "<group>"; };
 		B6D8A44B2A6C4980000196FB /* Studios (Debug).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Studios (Debug).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6D8A44E2A6C4980000196FB /* StudiosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudiosApp.swift; sourceTree = "<group>"; };
 		B6D8A4522A6C4981000196FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				B6D8A45D2A6C4A41000196FB /* HomeView.swift */,
 				B6D8A4602A6C4A5F000196FB /* HomeViewModel.swift */,
 				B6D8A46B2A6C64DA000196FB /* ReleaseDetailView.swift */,
+				B641CFA42AAE24FE00ADCA42 /* DownloadLinksSection.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -184,6 +187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6D8A46F2A6C6F36000196FB /* String+Ext.swift in Sources */,
+				B641CFA52AAE24FE00ADCA42 /* DownloadLinksSection.swift in Sources */,
 				B6D8A46C2A6C64DA000196FB /* ReleaseDetailView.swift in Sources */,
 				B6D8A44F2A6C4980000196FB /* StudiosApp.swift in Sources */,
 				B6D8A4612A6C4A5F000196FB /* HomeViewModel.swift in Sources */,

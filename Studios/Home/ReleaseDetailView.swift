@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ReleaseDetailView: View {
   var archiveRelease: ArchiveRelease
-  @Environment(\.openURL) private var openURL
 
     var body: some View {
       HStack() {
@@ -50,41 +49,14 @@ struct ReleaseDetailView: View {
 //            }
           }
           
-          Text("Suggested Download")
-            .font(.headline)
-            .padding(.top)
-          ForEach(archiveRelease.downloadLinks.filter({ downloadLink in
+          let suggestDownloads = archiveRelease.downloadLinks.filter({ downloadLink in
             downloadLink.platform == getPlatform() && downloadLink.type == DownloadType.Zip
-          })) { downloadLink in
-            HStack(alignment: .center, spacing: nil) {
-              Text(downloadLink.fileName)
-                .frame(maxWidth: .infinity, alignment: .leading)
-              Button(action: {
-                openURL(URL(string: downloadLink.url)!)
-              }) {
-                Text("Download")
-              }
-              .padding(.leading)
-            }
-          }
-          
-          Text("Other Downloads")
-            .font(.headline)
-            .padding(.top)
-          ForEach(archiveRelease.downloadLinks.filter({ downloadLink in
+          })
+          let otherDownloads = archiveRelease.downloadLinks.filter({ downloadLink in
             downloadLink.platform != getPlatform()
-          })) { downloadLink in
-            HStack(alignment: .center, spacing: nil) {
-              Text(downloadLink.fileName)
-                .frame(maxWidth: .infinity, alignment: .leading)
-              Button(action: {
-                openURL(URL(string: downloadLink.url)!)
-              }) {
-                Text("Download")
-              }
-              .padding(.leading)
-            }
-          }
+          })
+          DownloadLinksSection(title: "Suggested Download", downloadLinks: suggestDownloads)
+          DownloadLinksSection(title: "Other Download", downloadLinks: otherDownloads)
         }
       }
       .padding()
@@ -114,6 +86,12 @@ struct ReleaseDetailView: View {
     }
     return platform
   }
+}
+
+struct ReleaseDownloadListItem: Identifiable {
+  let id = UUID()
+  let title: String
+  let items: [DownloadLink]
 }
 
 struct ReleaseDetailView_Previews: PreviewProvider {
