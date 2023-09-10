@@ -17,6 +17,7 @@
 		B6D8A4672A6C4BC3000196FB /* ArchiveRelease.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D8A4662A6C4BC3000196FB /* ArchiveRelease.swift */; };
 		B6D8A46C2A6C64DA000196FB /* ReleaseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D8A46B2A6C64DA000196FB /* ReleaseDetailView.swift */; };
 		B6D8A46F2A6C6F36000196FB /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D8A46E2A6C6F36000196FB /* String+Ext.swift */; };
+		B6DC1FF12AAE2CAA00B4C44A /* HomeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DC1FF02AAE2CAA00B4C44A /* HomeState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		B6D8A4662A6C4BC3000196FB /* ArchiveRelease.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveRelease.swift; sourceTree = "<group>"; };
 		B6D8A46B2A6C64DA000196FB /* ReleaseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseDetailView.swift; sourceTree = "<group>"; };
 		B6D8A46E2A6C6F36000196FB /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
+		B6DC1FF02AAE2CAA00B4C44A /* HomeState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 				B6D8A4602A6C4A5F000196FB /* HomeViewModel.swift */,
 				B6D8A46B2A6C64DA000196FB /* ReleaseDetailView.swift */,
 				B641CFA42AAE24FE00ADCA42 /* DownloadLinksSection.swift */,
+				B6DC1FF02AAE2CAA00B4C44A /* HomeState.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -190,6 +193,7 @@
 				B641CFA52AAE24FE00ADCA42 /* DownloadLinksSection.swift in Sources */,
 				B6D8A46C2A6C64DA000196FB /* ReleaseDetailView.swift in Sources */,
 				B6D8A44F2A6C4980000196FB /* StudiosApp.swift in Sources */,
+				B6DC1FF12AAE2CAA00B4C44A /* HomeState.swift in Sources */,
 				B6D8A4612A6C4A5F000196FB /* HomeViewModel.swift in Sources */,
 				B6D8A4672A6C4BC3000196FB /* ArchiveRelease.swift in Sources */,
 				B6D8A45E2A6C4A41000196FB /* HomeView.swift in Sources */,

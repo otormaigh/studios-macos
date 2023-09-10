@@ -24,27 +24,39 @@ struct HomeView: View {
       NavigationSplitView(columnVisibility: $columnVisibility) {
         Text("").navigationSplitViewColumnWidth(0)
       } content: {
-        List(viewModel.listItems.filter({ item in
-          if releaseChannelFilter == nil {
-            return true
-          } else {
-            return item.channel == releaseChannelFilter
-          }
-        }), selection: $selectedItemId) { item in
-          HStack {
-            Text("\(item.name) \(item.version)")
-            Spacer()
-            if item.isInstalled {
-              Image(systemName: "checkmark.circle.fill")
+        switch viewModel.state {
+          case .loading:
+            ProgressView()
+          case .listItems(let listItems):
+            List(listItems.filter({ item in
+              if releaseChannelFilter == nil {
+                return true
+              } else {
+                return item.channel == releaseChannelFilter
+              }
+            }), selection: $selectedItemId) { item in
+              HStack {
+                Text("\(item.name) \(item.version)")
+                Spacer()
+                if item.isInstalled {
+                  Image(systemName: "checkmark.circle.fill")
+                }
+              }
             }
-          }
+          case .error:
+            Text("Error...")
         }
       } detail: {
-        if let archiveRelease = viewModel.listItems.first(where: { archiveRelease in archiveRelease.id == selectedItemId }) {
-          ReleaseDetailView(archiveRelease: archiveRelease)
-            .navigationSplitViewColumnWidth(400)
-        } else {
-          Text("No Version Selected")
+        switch viewModel.state {
+          case .listItems(let listItems):
+            if let archiveRelease = listItems.first(where: { archiveRelease in archiveRelease.id == selectedItemId }) {
+              ReleaseDetailView(archiveRelease: archiveRelease)
+                .navigationSplitViewColumnWidth(400)
+            } else {
+              Text("No Version Selected")
+            }
+          default:
+            Text("No Version Selected")
         }
       }
       .navigationSplitViewStyle(.balanced)
@@ -77,8 +89,8 @@ struct HomeView: View {
   }
 }
 
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-      HomeView(viewModel: HomeViewModel())
-    }
-}
+//struct HomeView_Previews: PreviewProvider {
+//    static var previews: some View {
+//      HomeView(viewModel: HomeViewModel())
+//    }
+//}

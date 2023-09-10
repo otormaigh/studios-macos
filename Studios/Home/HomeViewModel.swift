@@ -11,16 +11,16 @@ import SwiftSoup
 import Combine
 
 class HomeViewModel: ObservableObject {
+  @Published var state = HomeState.loading
+  
   private static let logger = Logger(
     subsystem: Bundle.main.bundleIdentifier!,
     category: String(describing: HomeViewModel.self)
   )
   var cancellables: Set<AnyCancellable> = Set()
-  // FIXME: Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
-  @Published var listItems = [ArchiveRelease]()
   
   func fetch() {
-    listItems.removeAll()
+    self.state = HomeState.loading
     let installedVersions = fetchInstalledVersions()
     
     let url = URL(string: "https://developer.android.com/studio/archive")!
@@ -108,14 +108,15 @@ class HomeViewModel: ObservableObject {
                 isInstalled: isInstalled,
                 filePath: filePath)
             }
-            self.listItems.append(contentsOf: archiveReleases.sorted { $0.name > $1.name })
-          } catch {
             
+            self.state = HomeState.listItems(archiveReleases.sorted { $0.name > $1.name })
+          } catch {
+            self.state = HomeState.error
           }
         }
         task.resume()
       } catch {
-        
+        self.state = HomeState.error
       }
     }
     
