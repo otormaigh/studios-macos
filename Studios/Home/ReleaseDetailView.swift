@@ -54,7 +54,7 @@ struct ReleaseDetailView: View {
             .font(.headline)
             .padding(.top)
           ForEach(archiveRelease.downloadLinks.filter({ downloadLink in
-            downloadLink.platform == Platform.MacSilicon && downloadLink.type == DownloadType.Zip
+            downloadLink.platform == getPlatform() && downloadLink.type == DownloadType.Zip
           })) { downloadLink in
             HStack(alignment: .center, spacing: nil) {
               Text(downloadLink.fileName)
@@ -72,12 +72,13 @@ struct ReleaseDetailView: View {
             .font(.headline)
             .padding(.top)
           ForEach(archiveRelease.downloadLinks.filter({ downloadLink in
-            downloadLink.platform != Platform.MacSilicon
+            downloadLink.platform != getPlatform()
           })) { downloadLink in
             HStack(alignment: .center, spacing: nil) {
               Text(downloadLink.fileName)
                 .frame(maxWidth: .infinity, alignment: .leading)
               Button(action: {
+                openURL(URL(string: downloadLink.url)!)
               }) {
                 Text("Download")
               }
@@ -94,6 +95,24 @@ struct ReleaseDetailView: View {
         maxHeight: .infinity,
         alignment: .topLeading
       )
+  }
+  
+  func getPlatform() -> Platform {
+    var utsname = utsname()
+    uname(&utsname)
+    let rawPlatform = withUnsafePointer(to: &utsname.machine) {
+      $0.withMemoryRebound(to: CChar.self, capacity: Int(_SYS_NAMELEN)) {
+        String(cString: $0)
+      }
+    }
+    
+    let platform: Platform
+    if (rawPlatform == "arm64") {
+      platform = Platform.MacSilicon
+    } else {
+      platform = Platform.MacIntel
+    }
+    return platform
   }
 }
 
